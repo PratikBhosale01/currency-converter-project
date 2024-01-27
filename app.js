@@ -4,6 +4,7 @@ const dropdown = document.querySelectorAll(".dropdown select");
 const btn = document.querySelector("form button");
 const fromCurr = document.querySelector(".from select");
 const toCurr = document.querySelector(".to select");
+const msg = document.querySelector(".msg");
 
 for(let select of dropdown){
 for( currCode in countryList) {
@@ -34,7 +35,9 @@ const updateFlag = (element) =>{
 
 };
 
-addEventListener("click",(evt) => {
+
+
+btn.addEventListener("click",async (evt) => {
     evt.preventDefault();
     let amount = document.querySelector(".amount input");
     let amtval = amount.value;
@@ -42,6 +45,16 @@ addEventListener("click",(evt) => {
         amtval = 1;
         amount.value = "1";
     }
-        console.log(fromCurr.value ,toCurr.value);
-        const URL  =`${BASE_URL}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`
+        // console.log(fromCurr.value ,toCurr.value);
+        const URL  =`${BASE_URL}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`;
+        let reponse= await fetch(URL);
+        let data =  await reponse.json();
+        let rate = data[toCurr.value.toLowerCase()];
+
+        let finalAmount = amtval * rate ;
+        msg.innerText = `${amtval}  ${fromCurr.value}  = ${finalAmount }  ${toCurr.value}`;
+
+
+        
+        
 });
